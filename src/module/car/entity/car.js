@@ -4,6 +4,7 @@ module.exports = class Car {
         brand,
         model,
         year,
+        crestUrl,
         kilometres,
         color,
         airConditioning,
@@ -14,6 +15,7 @@ module.exports = class Car {
        this.brand = brand;
        this.model = model;
        this.year = year;
+       this.crestUrl = crestUrl;
        this.kilometres = kilometres;
        this.color = color;
        this.airConditioning = airConditioning;

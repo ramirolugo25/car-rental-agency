@@ -27,9 +27,11 @@ module.exports = class CarRepository extends AbstractCarRepository {
             id = car.id;
             const statement = this.databaseAdapter.prepare(`
                 UPDATE cars SET
+                    ${car.crestUrl ? `crest_url = ?,` : ''}
                     brand = ?,
                     model = ?,
                     year = ?,
+                    crest_url = ?,
                     kilometres = ?,
                     color = ?,
                     air_conditioning = ?,
@@ -42,6 +44,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
                 car.brand,
                 car.model,
                 car.year,
+                car.crestUrl,
                 car.kilometres,
                 car.color,
                 car.airConditioning,
@@ -50,6 +53,10 @@ module.exports = class CarRepository extends AbstractCarRepository {
                 car.id,
             ];
 
+            if(car.crestUrl){
+                params.unshift(club.crestUrl);
+            }
+
             statement.run(params);
         }else{
             const statement = this.databaseAdapter.prepare(`
@@ -57,6 +64,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
                     brand,
                     model,
                     year,
+                    crest_url,
                     kilometres,
                     color,
                     air_conditioning,
@@ -69,6 +77,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
                 car.brand,
                 car.model,
                 car.year,
+                car.crestUrl,
                 car.kilometres,
                 car.color,
                 car.airConditioning,
@@ -110,6 +119,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
                 brand,
                 model,
                 year,
+                crest_url,
                 kilometres,
                 color,
                 air_conditioning,
@@ -138,6 +148,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
                 brand,
                 model,
                 year,
+                crest_url,
                 kilometres,
                 color,
                 air_conditioning,
