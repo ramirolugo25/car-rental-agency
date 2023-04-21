@@ -4,6 +4,7 @@ CREATE TABLE cars (
     brand TEXT NOT NULL,
     model TEXT NOT NULL,
     `year` TEXT NOT NULL,
+    crest_url TEXT,
     kilometres TEXT NOT NULL,
     color TEXT NOT NULL,
     air_conditioning BOOLEAN NOT NULL,

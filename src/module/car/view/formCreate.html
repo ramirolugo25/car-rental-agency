@@ -1,0 +1,83 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+    <form action="/car/save" method="POST" enctype="multipart/form-data">
+        <div class="field">
+            <label for="brand" class="label">Brand</label>
+            <div class="control">
+              <input class="input" type="text" name="brand">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="model" class="label">Model</label>
+            <div class="control">
+              <input class="input" type="text" name="model">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="year" class="label">Year</label>
+            <div class="control">
+              <input class="input" type="text" name="year">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="kilometres" class="label">Kilometres</label>
+            <div class="control">
+              <input class="input" type="text" name="kilometres">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="color" class="label">Color</label>
+            <div class="control">
+              <input class="input" type="text" name="color">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="air-conditioning" class="label">Air Conditioning</label>
+            <div class="control">
+                <div class="select">
+                  <select name="air-conditioning">
+                    <option>No</option>
+                    <option>Yes</option>
+                  </select>
+                </div>
+              </div>
+        </div>
+
+        <div class="field">
+            <label for="gearbox" class="label">Gearbox</label>
+            <div class="control">
+                <div class="select">
+                  <select name="gearbox">
+                    <option>Manual gearbox</option>
+                    <option>Automatic gearbox</option>
+                  </select>
+                </div>
+              </div>
+        </div>
+
+        <div class="field">
+            <label for="passengers" class="label">Passengers</label>
+            <div class="control">
+              <input class="input" type="number" name="passengers">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="crest-url" class="label">Image</label>
+            <div class="control">
+              <input class="input" type="file" name="crest-url">
+            </div>
+        </div>
+        
+        <div class="control">
+            <button class="button is-primary">Submit</button>
+        </div>
+
+    </form>
+{% endblock %}

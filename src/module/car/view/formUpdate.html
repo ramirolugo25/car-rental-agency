@@ -1,0 +1,95 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+<form action="/car/update/{{data.car.id}}" method="POST" enctype="multipart/form-data">
+
+  <div class="field">
+    <label for="brand" class="label">Brand</label>
+    <div class="control">
+      <input class="input" type="text" name="brand" value="{{data.car.brand}}">
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="model" class="label">Model</label>
+    <div class="control">
+      <input class="input" type="text" name="model" value="{{data.car.model}}">
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="year" class="label">Year</label>
+    <div class="control">
+      <input class="input" type="text" name="year" value="{{data.car.year}}">
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="kilometres" class="label">Kilometres</label>
+    <div class="control">
+      <input class="input" type="text" name="kilometres" value="{{data.car.kilometres}}">
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="color" class="label">Color</label>
+    <div class="control">
+      <input class="input" type="text" name="color" value="{{data.car.color}}">
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="air-conditioning" class="label">Air Conditioning</label>
+    <div class="control">
+      <div class="select">
+        <select name="air-conditioning">
+          {% if data.car.airConditioning === 'Yes' %}
+          <option>No</option>
+          <option selected>Yes</option>
+          {% else %}
+          <option selected>No</option>
+          <option>Yes</option>
+          {% endif %}
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="gearbox" class="label">Gearbox</label>
+    <div class="control">
+      <div class="select">
+        <select name="gearbox">
+          {% if data.car.gearbox === 'Manual gearbox' %}
+          <option selected>Manual gearbox</option>
+          <option>Automatic gearbox</option>
+          {% else %}
+          <option>Manual gearbox</option>
+          <option selected>Automatic gearbox</option>
+          {% endif %}
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="passengers" class="label">Passengers</label>
+    <div class="control">
+      <input class="input" type="number" name="passengers" value="{{data.car.passengers}}">
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="crest-url" class="label">Image</label>
+    <img id="formUpdate-image" src="/{{data.car.crestUrl}}">
+    <div class="control">
+      <input class="input" type="file" name="crest-url">
+    </div>
+  </div>
+
+  <div class="control">
+    <button class="button is-primary">Submit</button>
+  </div>
+
+</form>
+{% endblock %}

@@ -9,9 +9,10 @@ module.exports = class CarRepository extends AbstractCarRepository {
      * @param {import('better-sqlite3').Database} databaseAdapter 
      */
 
-    constructor(databaseAdapter){
+    constructor(fileSystem, databaseAdapter) {
         super();
         this.databaseAdapter = databaseAdapter;
+        this.fileSystem = fileSystem;
     }
 
     /**
@@ -19,47 +20,8 @@ module.exports = class CarRepository extends AbstractCarRepository {
      * @param {import('../../entity/car')} car 
      * @returns {import('../../entity/car')}
      */
-    save(car){
-        let id;
-        const isUpdate = car.id;
-
-        if(isUpdate){
-            id = car.id;
-            const statement = this.databaseAdapter.prepare(`
-                UPDATE cars SET
-                    ${car.crestUrl ? `crest_url = ?,` : ''}
-                    brand = ?,
-                    model = ?,
-                    year = ?,
-                    crest_url = ?,
-                    kilometres = ?,
-                    color = ?,
-                    air_conditioning = ?,
-                    passengers = ?,
-                    gearbox = ?
-                WHERE id = ?
-            `);
-
-            const params = [
-                car.brand,
-                car.model,
-                car.year,
-                car.crestUrl,
-                car.kilometres,
-                car.color,
-                car.airConditioning,
-                car.passengers,
-                car.gearbox,
-                car.id,
-            ];
-
-            if(car.crestUrl){
-                params.unshift(club.crestUrl);
-            }
-
-            statement.run(params);
-        }else{
-            const statement = this.databaseAdapter.prepare(`
+    save(car) {
+        const statement = this.databaseAdapter.prepare(`
                 INSERT INTO cars(
                     brand,
                     model,
@@ -70,25 +32,65 @@ module.exports = class CarRepository extends AbstractCarRepository {
                     air_conditioning,
                     passengers,
                     gearbox
-                ) VALUES(?,?,?,?,?,?,?,?)
+                ) VALUES(?,?,?,?,?,?,?,?,?)
             `);
 
-            const params = [
-                car.brand,
-                car.model,
-                car.year,
-                car.crestUrl,
-                car.kilometres,
-                car.color,
-                car.airConditioning,
-                car.passengers,
-                car.gearbox,
-            ];
+        const params = [
+            car.brand,
+            car.model,
+            car.year,
+            car.crestUrl,
+            car.kilometres,
+            car.color,
+            car.airConditioning,
+            car.passengers,
+            car.gearbox,
+        ];
 
-            const result = statement.run(params);
-            id = result.lastInsertRowid;
+        const result = statement.run(params);
+        const id = result.lastInsertRowid;
+
+        return this.getById(id);
+    }
+
+    saveUpdate(car) {
+        const id = car.id;
+        const params = [
+            car.brand,
+            car.model,
+            car.year,
+            car.kilometres,
+            car.color,
+            car.airConditioning,
+            car.passengers,
+            car.gearbox,
+            car.id,
+        ];
+        if (car.crestUrl) {
+            const {crest_url: crestUrl}  = this.databaseAdapter.prepare(`
+                SELECT 
+                    crest_url
+                FROM cars WHERE id = ?
+            `).get(id);
+            this.fileSystem.unlinkSync(crestUrl);
+            params.unshift(car.crestUrl);
         }
+        
+        const statement = this.databaseAdapter.prepare(`
+                UPDATE cars SET
+                    ${car.crestUrl ? `crest_url = ?,` : ''}
+                    brand = ?,
+                    model = ?,
+                    year = ?,
+                    kilometres = ?,
+                    color = ?,
+                    air_conditioning = ?,
+                    passengers = ?,
+                    gearbox = ?
+                WHERE id = ?
+        `);
 
+        statement.run(params);
         return this.getById(id);
     }
 
@@ -97,12 +99,18 @@ module.exports = class CarRepository extends AbstractCarRepository {
      * @param {import('../../entity/car')} car 
      * @returns {Boolean}
      */
-    delete(car){
-        if(!car || !car.id){
+    delete(car) {
+        if (!car || !car.id) {
             throw new CarIdNotDefinedError('the car id is not defined');
+        }
+      
+        
+        if(car.crestUrl){
+            this.fileSystem.unlinkSync(car.crestUrl);
         }
 
         this.databaseAdapter.prepare('DELETE FROM cars WHERE id = ?').run(car.id);
+        
 
         return true;
     }
@@ -112,7 +120,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
      * @param {Number} id 
      * @returns {import('../../entity/car')}
      */
-    getById(id){
+    getById(id) {
         const car = this.databaseAdapter.prepare(`
             SELECT 
                 id,
@@ -128,7 +136,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
             FROM cars WHERE id = ?
         `).get(id);
 
-        if(car === undefined){
+        if (car === undefined) {
             throw new CarNotFoundError(`the car with ID ${id} was not found`);
         }
 
@@ -141,7 +149,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
      * @returns {Array<import('../../entity/car')>}
      */
 
-    getAll(){
+    getAll() {
         const cars = this.databaseAdapter.prepare(
             `SELECT
                 id,

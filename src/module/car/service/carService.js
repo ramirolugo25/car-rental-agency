@@ -21,10 +21,19 @@ module.exports = class Service {
         if(car === undefined){
             throw new CarNotDefinedError();
         }
-
         return this.carRepository.save(car);
     }
 
+    /**
+     * 
+     * @param {import('../entity/car')} car 
+     */
+    async saveUpdate(car){
+        if(car === undefined){
+            throw new CarNotDefinedError();
+        }
+        return this.carRepository.saveUpdate(car);
+    }
 
     /**
      * 

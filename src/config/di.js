@@ -1,6 +1,7 @@
 const path = require('path');
 const crypto = require('crypto');
-const {default: DIContainer, object, get, factory, func} = require('rsdi');
+const fs = require('fs');
+const {default: DIContainer, object, use, factory} = require('rsdi');
 const multer = require('multer');
 const Sqlite3Database = require('better-sqlite3');
 
@@ -43,7 +44,8 @@ function configureMulter(){
  * @param {DIContainer} container 
  */
 function addCommonDefinitions(container){
-    container.addDefinitions({
+    container.add({
+        fs,
         MainDatabaseAdapter: factory(configureMainDatabaseAdapter),
         Session: factory(configureSession),
         Multer: factory(configureMulter),
@@ -55,10 +57,10 @@ function addCommonDefinitions(container){
  * @param {DIContainer} container 
  */
 function addCarModuleDefinitions(container){
-    container.addDefinitions({
-        CarController: object(CarController).construct(get('Multer'), get('CarService')),
-        CarService: object(CarService).construct(get('CarRepository')),
-        CarRepository: object(CarRepository).construct(get('MainDatabaseAdapter'))
+    container.add({
+        CarController: object(CarController).construct(use('Multer'), use('CarService')),
+        CarService: object(CarService).construct(use('CarRepository')),
+        CarRepository: object(CarRepository).construct(use('fs'), use('MainDatabaseAdapter'))
     });
 }
 

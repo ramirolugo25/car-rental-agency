@@ -19,22 +19,53 @@ module.exports = class CarController extends AbstractController {
         const ROUTE = this.ROUTE_BASE;
 
         app.get(`${ROUTE}/create`, this.create.bind(this));
+        app.get(`${ROUTE}/update/:id`, this.update.bind(this));
         app.get(`${ROUTE}` , this.index.bind(this));
-        app.get(`${ROTUE}/view/:id`, this.view.bind(this));
-        app.get(`${ROUTE}/delete/:id`, this.delete.bind(this));
+        app.get(`${ROUTE}/view/:id`, this.view.bind(this));
+        app.get(`${ROUTE}/delete/:id`, this.deleteView.bind(this));
+        app.post(`${ROUTE}/delete/:id`, this.delete.bind(this));
         app.post(`${ROUTE}/save`, this.uploadMiddleware.single('crest-url'), this.save.bind(this));
+        app.post(`${ROUTE}/update/:id`, this.uploadMiddleware.single('crest-url'), this.saveUpdate.bind(this));
     }
 
     async index(req, res){
-        const cars = this.carService.getAll();
+        const cars = await this.carService.getAll();
         const {errors , messages} = req.session;
-        res.render();
+        res.render('car/view/index.html', {data: {cars}, messages, errors});
         req.session.errors = [];
         req.session.messages = [];
     }
 
     async create(req, res){
-        res.render('');
+        res.render('car/view/formCreate.html');
+    }
+
+    async update(req,res){
+        const {id} = req.params;
+        if(!id){
+            throw new CarIdNotDefinedError();
+        }
+        try {
+            const car = await this.carService.getById(id);
+            res.render('car/view/formUpdate.html', {data: {car} });
+        } catch (e) {
+            req.session.error = [e.message, e.stack];
+            res.redirect('/car');
+        }
+    }
+
+    async deleteView(req, res){
+        const {id} = req.params;
+        if(!id){
+            throw new CarIdNotDefinedError();
+        }
+        try {
+            const car = await this.carService.getById(id);
+            res.render('car/view/formDelete.html', {data: {car}});
+        } catch (e) {
+            req.session.error = [e.message, e.stack];
+            res.redirect('/car');
+        }
     }
 
     async view(req, res){
@@ -45,10 +76,10 @@ module.exports = class CarController extends AbstractController {
 
         try {
             const car = await this.carService.getById(id);
-            res.render();
+            res.render('car/view/car.html', {data: {car}});
         } catch (e) {
             req.session.errors = [e.message, e.stack];
-            res.redirect();
+            res.redirect('/car');
         }
         
     }
@@ -64,9 +95,6 @@ module.exports = class CarController extends AbstractController {
             req.session.errors = [e.message, e.stack];
         }
         res.redirect();
-        
-        
-
     }
 
     async save(req, res){
@@ -77,15 +105,29 @@ module.exports = class CarController extends AbstractController {
                 car.crestUrl = path;
             }
             const savedCar = await this.carService.save(car);
-            if(car.id){
-                req.session.messages = [`The car with id ${car.id} was updated successfully`];
-            } else{
-                req.session.message = [`The car with id ${savedCar.id} was created (${savedCar.brand} ${savedCar.model})`]
-            }
-            res.redirect('');
-        } catch (error) {
+            req.session.message = [`The car with id ${savedCar.id} was created (${savedCar.brand} ${savedCar.model})`]
+            res.redirect('/car');
+        } catch (e) {
             req.session.errors = [e.message, e.stack];
-            res.redirect();
+            res.redirect('/car');
+        }
+    }
+
+    async saveUpdate(req,res){
+        try {
+            const {id} = req.params;
+            const car = fromDataToEntity(req.body);
+            if(req.file){
+                const {path} = req.file;
+                car.crestUrl = path;
+            }
+            car.id = id;
+            const updateCar = await this.carService.saveUpdate(car);
+            req.session.messages = [`The car with id ${car.id} was updated successfully`];
+            res.redirect('/car');
+        } catch (e) {
+            req.session.errors = [e.message, e.stack];
+            res.redirect('/car');
         }
     }
 
