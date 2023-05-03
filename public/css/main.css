@@ -1,0 +1,13 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+}
+
+#car-image{
+    width: 600px;
+}
+
+#formUpdate-image{
+    width: 344px;
+}

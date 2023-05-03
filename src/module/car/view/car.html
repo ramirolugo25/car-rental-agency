@@ -1,0 +1,69 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+<div id="card-container">
+  <div class="card">
+    <div class="card-image">
+
+      <img id="car-image" src='/{{data.car.crestUrl}}' alt="Image">
+
+    </div>
+    <div class="card-content">
+      <div class="media">
+
+          <p>Id:<strong> {{data.car.id}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Brand:<strong> {{data.car.brand}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Model:<strong> {{data.car.model}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Year:<strong> {{data.car.year}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Kilometres:<strong> {{data.car.kilometres}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Color:<strong> {{data.car.color}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Air conditioning:<strong> {{data.car.airConditioning}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Passengers:<strong> {{data.car.passengers}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Gearbox:<strong> {{data.car.gearbox}}</strong></p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for car in data.cars %}
+        <tr>
+            <th>{{car.id}}</th>
+            <td>{{car.brand}}</td>
+            <td>{{car.model}}</td>
+            <td>{{car.year}}</td>
+            <td><a href="/car/view/{{car.id}}"><button class="button is-primary">Watch</button></a></td>
+            <td><a href="/car/update/{{car.id}}"><button class="button is-link">Update</button></a></td>
+            <td><a href="/car/delete/{{car.id}}"><button class="button is-danger">Delete</button></a></td>
+        </tr>
+        
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
