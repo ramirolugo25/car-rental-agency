@@ -4,12 +4,13 @@ CREATE TABLE cars (
     brand TEXT NOT NULL,
     model TEXT NOT NULL,
     `year` TEXT NOT NULL,
-    crest_url TEXT,
+    crestUrl TEXT,
     kilometres TEXT NOT NULL,
     color TEXT NOT NULL,
-    air_conditioning BOOLEAN NOT NULL,
+    airConditioning BOOLEAN NOT NULL,
     passengers INTEGER NOT NULL,
     gearbox TEXT NOT NULL,
-    created_at DATE DEFAULT (datetime('now', 'localtime')) NOT NULL,
-    updated_at DATE DEFAULT (datetime('now', 'localtime')) NOT NULL
+    lastUpdated DATE DEFAULT (datetime('now', 'localtime')) NOT NULL,
+    createdAt DATE DEFAULT (datetime('now', 'localtime')) NOT NULL
 );
+

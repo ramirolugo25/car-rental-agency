@@ -15,6 +15,10 @@ module.exports = class CarController extends AbstractController {
         this.carService = carService;
     }
 
+    /**
+     * 
+     * @param {import('express').Application} app 
+     */
     configureRoutes(app){
         const ROUTE = this.ROUTE_BASE;
 
@@ -28,6 +32,11 @@ module.exports = class CarController extends AbstractController {
         app.post(`${ROUTE}/update/:id`, this.uploadMiddleware.single('crest-url'), this.saveUpdate.bind(this));
     }
 
+    /**
+     * 
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res 
+     */
     async index(req, res){
         const cars = await this.carService.getAll();
         const {errors , messages} = req.session;
@@ -36,10 +45,21 @@ module.exports = class CarController extends AbstractController {
         req.session.messages = [];
     }
 
+
+    /**
+     * 
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res 
+     */
     async create(req, res){
         res.render('car/view/formCreate.html');
     }
 
+    /**
+     * 
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res 
+     */
     async update(req,res){
         const {id} = req.params;
         if(!id){
@@ -54,6 +74,11 @@ module.exports = class CarController extends AbstractController {
         }
     }
 
+    /**
+     * 
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res 
+     */
     async deleteView(req, res){
         const {id} = req.params;
         if(!id){
@@ -68,6 +93,11 @@ module.exports = class CarController extends AbstractController {
         }
     }
 
+    /**
+     * 
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res 
+     */
     async view(req, res){
         const {id} = req.params;
         if(!id){
@@ -84,6 +114,11 @@ module.exports = class CarController extends AbstractController {
         
     }
 
+    /**
+     * 
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res 
+     */
     async delete(req, res){
         
         try {
@@ -94,9 +129,14 @@ module.exports = class CarController extends AbstractController {
         } catch (e) {
             req.session.errors = [e.message, e.stack];
         }
-        res.redirect();
+        res.redirect('/car');
     }
 
+    /**
+     * 
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res 
+     */
     async save(req, res){
         try {
             const car = fromDataToEntity(req.body);
@@ -113,6 +153,11 @@ module.exports = class CarController extends AbstractController {
         }
     }
 
+    /**
+     * 
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res 
+     */
     async saveUpdate(req,res){
         try {
             const {id} = req.params;
