@@ -1,23 +1,43 @@
 const path = require('path');
 const crypto = require('crypto');
 const fs = require('fs');
-const {default: DIContainer, object, use, factory} = require('rsdi');
+const {default: DIContainer, object, use, factory, func} = require('rsdi');
+const { Sequelize } = require('sequelize');
 const multer = require('multer');
-const Sqlite3Database = require('better-sqlite3');
 
 const session = require('express-session');
-const {CarController, CarService, CarRepository} = require('../module/car/module');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const {CarController, CarService, CarRepository, CarModel} = require('../module/car/module');
 
-function configureMainDatabaseAdapter(){
-    return new Sqlite3Database(process.env.DB_PATH,{
-        verbose: console.log,
+
+function configureMainSequelizeDatabase() {
+    const sequelize = new Sequelize({
+        dialect: 'sqlite',
+        storage: process.env.DB_PATH,
     });
+    return sequelize;
 }
 
-function configureSession(){
+function configureSessionSequelizeDatabase() {
+    const sequelize = new Sequelize({
+        dialect: 'sqlite',
+        storage: process.env.SESSION_DB_PATH,
+    });
+    return sequelize;
+}
+
+function configureCarModel(container){
+    CarModel.setup(container.get('Sequelize'));
+    return CarModel;
+}
+
+
+function configureSession(container){
     const ONE_WEEK_IN_SECONDS = 604800000;
 
+    const sequelize = container.get('SessionSequelize');
     const sessionOptions = {
+        store: new SequelizeStore({db: sequelize}),
         secret: crypto.randomBytes(64).toString('hex'),
         resave: false,
         saveUninitialized: false,
@@ -46,7 +66,8 @@ function configureMulter(){
 function addCommonDefinitions(container){
     container.add({
         fs,
-        MainDatabaseAdapter: factory(configureMainDatabaseAdapter),
+        Sequelize: factory(configureMainSequelizeDatabase),
+        SessionSequelize: factory(configureSessionSequelizeDatabase),
         Session: factory(configureSession),
         Multer: factory(configureMulter),
     });
@@ -60,7 +81,8 @@ function addCarModuleDefinitions(container){
     container.add({
         CarController: object(CarController).construct(use('Multer'), use('CarService')),
         CarService: object(CarService).construct(use('CarRepository')),
-        CarRepository: object(CarRepository).construct(use('fs'), use('MainDatabaseAdapter'))
+        CarRepository: object(CarRepository).construct(use('fs'), use('CarModel')),
+        CarModel: factory(configureCarModel),
     });
 }
 
