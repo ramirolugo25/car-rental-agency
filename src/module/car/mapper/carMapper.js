@@ -28,36 +28,45 @@ function fromDataToEntity({
 
 /**
  * 
- * @param {Object} formData
- * @returns Car
+ * @param {import('../model/carModel')} model 
+ * @returns {import('../entity/car')}
  */
-function fromDbToEntity({
-    id,
-    brand,
-    model,
-    year,
-    crest_url: crestUrl,
-    kilometres,
-    color,
-    air_conditioning: airConditioning,
-    passengers,
-    gearbox,
-}){
-  return new Car({
-    id,
-    brand,
-    model,
-    year,
-    crestUrl,
-    kilometres,
-    color,
-    airConditioning,
-    passengers,
-    gearbox,
-  });  
+function fromModelToEntity(model){
+  return new Car(model.toJSON());
 }
 
+// /**
+//  * 
+//  * @param {Object} formData
+//  * @returns Car
+//  */
+// function fromDbToEntity({
+//     id,
+//     brand,
+//     model,
+//     year,
+//     crest_url: crestUrl,
+//     kilometres,
+//     color,
+//     air_conditioning: airConditioning,
+//     passengers,
+//     gearbox,
+// }){
+//   return new Car({
+//     id,
+//     brand,
+//     model,
+//     year,
+//     crestUrl,
+//     kilometres,
+//     color,
+//     airConditioning,
+//     passengers,
+//     gearbox,
+//   });  
+// }
+
 module.exports = {
-    fromDbToEntity,
+    fromModelToEntity,
     fromDataToEntity,
 }
