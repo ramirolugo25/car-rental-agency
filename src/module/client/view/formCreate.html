@@ -1,0 +1,81 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+    <form action="/client/save" method="POST">
+        <div class="field">
+            <label for="name" class="label">Name</label>
+            <div class="control">
+              <input class="input" type="text" name="name" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="last-name" class="label">Last Name</label>
+            <div class="control">
+              <input class="input" type="text" name="last-name" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="document-type" class="label">Document Type</label>
+            <div class="control">
+                <div class="select">
+                  <select name="document-type">
+                    <option>DNI</option>
+                    <option>Driver license</option>
+                    <option>Passport</option>
+                  </select>
+                </div>
+              </div>
+        </div>
+
+
+        <div class="field">
+            <label for="document-number" class="label">Document Number</label>
+            <div class="control">
+              <input class="input" type="text" name="document-number" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="nationality" class="label">Nationality</label>
+            <div class="control">
+              <input class="input" type="text" name="nationality" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="address" class="label">Address</label>
+            <div class="control">
+              <input class="input" type="text" name="address" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="phone-number" class="label">Phone Number</label>
+            <div class="control">
+              <input class="input" type="text" name="phone-number" required>
+            </div>
+        </div>
+
+
+        <div class="field">
+            <label for="email" class="label">E-mail</label>
+            <div class="control">
+              <input class="input" type="email" name="email" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="birthdate" class="label">Birthdate</label>
+            <div class="control">
+              <input class="input" type="date" name="birthdate" required>
+            </div>
+        </div>
+        
+        <div class="control">
+            <button class="button is-primary">Submit</button>
+        </div>
+
+    </form>
+{% endblock %}

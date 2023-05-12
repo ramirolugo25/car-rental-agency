@@ -4,6 +4,7 @@ const nunjucks = require('nunjucks');
 
 const configureDependencyInjection = require('./config/di');
 const {init: initCarModule} = require('./module/car/module');
+const {init: initClientModule} = require("./module/client/module");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -20,6 +21,7 @@ const container = configureDependencyInjection(app);
 app.use(container.get('Session'));
 
 initCarModule(app, container);
+initClientModule(app, container);
 
 const carController = container.get('CarController');
 app.get('/', carController.index.bind(carController));

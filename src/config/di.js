@@ -8,6 +8,7 @@ const multer = require('multer');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const {CarController, CarService, CarRepository, CarModel} = require('../module/car/module');
+const {ClientController, ClientService, ClientRepository, ClientModel} = require('../module/client/module');
 
 
 function configureMainSequelizeDatabase() {
@@ -31,6 +32,9 @@ function configureCarModel(container){
     return CarModel;
 }
 
+function configureClientModel(container){
+    return ClientModel.setup(container.get('Sequelize'));
+}
 
 function configureSession(container){
     const ONE_WEEK_IN_SECONDS = 604800000;
@@ -59,6 +63,7 @@ function configureMulter(){
     return multer({storage});
 }
 
+
 /**
  * 
  * @param {DIContainer} container 
@@ -86,9 +91,19 @@ function addCarModuleDefinitions(container){
     });
 }
 
+function addClientModuleDefinitions(container){
+    container.add({
+        ClientController: object(ClientController).construct(use('ClientService')),
+        ClientService: object(ClientService).construct(use('ClientRepository')),
+        ClientRepository: object(ClientRepository).construct(use('ClientModel')),
+        ClientModel: factory(configureClientModel),
+    });
+}
+
 module.exports = function configureDI(){
     const container = new DIContainer();
     addCommonDefinitions(container);
     addCarModuleDefinitions(container);
+    addClientModuleDefinitions(container);
     return container;
 }

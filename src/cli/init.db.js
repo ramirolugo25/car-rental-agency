@@ -8,6 +8,7 @@ const container = configureDependencyInjection(app);
 const mainDb = container.get('Sequelize');
 
 container.get('CarModel');
+container.get('ClientModel');
 
 mainDb.sync();
 

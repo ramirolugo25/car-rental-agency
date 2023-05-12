@@ -1,4 +1,4 @@
-const { fromDbToEntity, fromModelToEntity } = require("../../mapper/carMapper");
+const { fromModelToEntity } = require("../../mapper/carMapper");
 const AbstractCarRepository = require("../abstractCarRepository");
 const CarIdNotDefinedError = require("../error/carIdNotDefinedError");
 const CarNotFoundError = require("../error/carNotFoundError");
@@ -26,6 +26,11 @@ module.exports = class CarRepository extends AbstractCarRepository {
         return fromModelToEntity(carModel);
     }
 
+    /**
+     * 
+     * @param {import('../../entity/car')} car 
+     * @returns {import('../../entity/car')}
+     */
     async saveUpdate(car) {
         //Delete the previous image from the filesystem if the image is update
         if (car.crestUrl) {
