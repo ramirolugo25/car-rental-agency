@@ -1,0 +1,29 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Last Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in data.clients %}
+        <tr>
+            <th>{{client.id}}</th>
+            <td>{{client.name}}</td>
+            <td>{{client.lastName}}</td>
+            <td><a href="/client/view/{{client.id}}"><button class="button is-primary">Watch</button></a></td>
+            <td><a href="/client/update/{{client.id}}"><button class="button is-link">Update</button></a></td>
+            <td><a href="/client/delete/{{client.id}}"><button class="button is-danger">Delete</button></a></td>
+        </tr>
+        
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

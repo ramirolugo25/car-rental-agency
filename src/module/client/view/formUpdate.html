@@ -1,0 +1,92 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+    <form action="/client/update/{{data.client.id}}" method="POST">
+        <div class="field">
+            <label for="name" class="label">Name</label>
+            <div class="control">
+              <input class="input" type="text" name="name" value="{{data.client.name}}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="last-name" class="label">Last Name</label>
+            <div class="control">
+              <input class="input" type="text" name="last-name" value="{{data.client.lastName}}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="document-type" class="label">Document Type</label>
+            <div class="control">
+                <div class="select">
+                  <select name="document-type">
+                    {% if data.client.documentType === 'DNI' %}
+                    <option selected>DNI</option>
+                    <option>Driver's license</option>
+                    <option>Passport</option>
+                    {% endif %}
+                    {% if data.client.documentType === 'Driver license' %}
+                    <option>DNI</option>
+                    <option selected>Driver's license</option>
+                    <option>Passport</option>
+                    {% endif %}
+                    {% if data.client.documentType === 'Passport' %}
+                    <option>DNI</option>
+                    <option>Driver's license</option>
+                    <option selected>Passport</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+        </div>
+
+
+        <div class="field">
+            <label for="document-number" class="label">Document Number</label>
+            <div class="control">
+              <input class="input" type="text" name="document-number" value="{{data.client.documentNumber}}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="nationality" class="label">Nationality</label>
+            <div class="control">
+              <input class="input" type="text" name="nationality" value="{{data.client.nationality}}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="address" class="label">Address</label>
+            <div class="control">
+              <input class="input" type="text" name="address" value="{{data.client.address}}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="phone-number" class="label">Phone Number</label>
+            <div class="control">
+              <input class="input" type="text" name="phone-number" value="{{data.client.phoneNumber}}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="email" class="label">E-mail</label>
+            <div class="control">
+              <input class="input" type="email" name="email" value="{{data.client.email}}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="birthdate" class="label">Birthdate</label>
+            <div class="control">
+              <input class="input" type="date" name="birthdate" value="{{data.client.birthdate}}">
+            </div>
+        </div>
+        
+        <div class="control">
+            <button class="button is-primary">Submit</button>
+        </div>
+
+    </form>
+{% endblock %}

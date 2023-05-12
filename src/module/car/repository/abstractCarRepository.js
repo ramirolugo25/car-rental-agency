@@ -19,10 +19,18 @@ module.exports = class AbstractCarRepository {
     }
 
     /**
-     * @param {Number} id 
+     * @param {import('../entity/car')} car
+     * @returns {import('../entity/car')} 
      */
+    async saveUpdate(car){
+        throw new MethodNotImplementedError();
+    }
 
-    async delete(id){
+    /**
+     * @param {import('../../entity/car')} car 
+     * @returns {Boolean}
+     */
+    async delete(car){
         throw new MethodNotImplementedError();
     }
 

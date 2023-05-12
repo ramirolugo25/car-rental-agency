@@ -1,0 +1,80 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+<div id="card-container">
+  <div class="card">
+    <div class="card-content">
+      <div class="media">
+
+          <p>Id:<strong> {{data.client.id}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Name:<strong> {{data.client.name}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Last Name:<strong> {{data.client.lastName}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Document Type:<strong> {{data.client.documentType}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Document Number:<strong> {{data.client.documentNumber}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Nationality:<strong> {{data.client.nationality}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Address:<strong> {{data.client.address}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>Phone Number:<strong> {{data.client.phoneNumber}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+          <p>E-mail:<strong> {{data.client.email}}</strong></p>
+
+      </div>
+
+      <div class="media">
+
+        <p>Birthdate:<strong> {{data.client.birthdate}}</strong></p>
+
+    </div>
+    </div>
+  </div>
+</div>
+
+<article class="message is-danger">
+    <div class="message-body">
+        Are you sure you want to delete the client?
+    </div>
+</article>
+
+<form action="/client/delete/{{data.client.id}}" method="POST">
+    <button class="button is-danger">Delete</button>
+</form>
+
+{% endblock %}
